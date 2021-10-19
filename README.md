@@ -1,4 +1,4 @@
-# Asynchronous JavaScript and Fetch 
+# Asynchronous JavaScript and Fetch
 
 ## Learning Goals
 
@@ -19,3 +19,6 @@
 ### Resources
 
 &emsp; [MDN - Using Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
+&emsp; [Blog - How JS Works](https://medium.com/jspoint/how-javascript-works-in-browser-and-node-ab7d0d09ac2f)
+&emsp; [Visual Example - How JS Works](http://latentflip.com/loupe)
+&emsp; [Breweries API](https://www.openbrewerydb.org/documentation)
