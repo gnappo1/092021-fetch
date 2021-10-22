@@ -6,7 +6,7 @@
 
 &emsp; ✅ HTTP Verbs
 
-&emsp; ✅ GET requests with external API
+&emsp; ✅ POST requests with internal API
 
 &emsp; ✅ Handling promises from .fetch()
 
@@ -14,7 +14,17 @@
 
 ### Warm Up Question
 
-&emsp; 💡 What are asynchronous functions and why are they well-suited for "fetching" from APIs?
+&emsp; 💡 How do our general approaches differ when making POST requests vs. GET requests?
+
+### To use the mock-API
+
+- First install JSON Server: npm install -g json-server
+- To start the server run: json-server --watch db.json
+- This will produce the following endpoints:
+    1. http://localhost:3000/gods
+    2. http://localhost:3000/heroes
+    3. http://localhost:3000/locations
+    4. http://localhost:3000/myths
 
 ### Resources
 

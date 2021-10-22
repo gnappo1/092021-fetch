@@ -1,41 +1,68 @@
+<!doctype html>
 <html lang="en">
   <head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<script defer src="index.js"></script>
-		<link rel="stylesheet" href="app.css" />
-		<!-- Bootstrap -->
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-		<title>Brew Finder - Starter Code</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="app.css" />
+    <script defer src="index.js"></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+    <title>Greek Mythology 101</title>
   </head>
   <body>
-    <body>
-        <div id="lecture-goals">
-			<h1>Asynchronous JavaScript & Fetch</h1>
+    <div id="lecture-goals">
+			<h1>CRUD with Fetch: POST Requests</h1>
 			<ul>
-				<li class="list-items">✅ Request-response cycle</li>
-				<li class="list-items">✅ HTTP Verbs</li>
-				<li class="list-items">✅ GET requests with external API</li>
-				<li class="list-items">✅ Handling promises from .fetch()</li>
-				<li class="list-items">✅ .catch()</li>
+				<li class="list-items">✅ Make POST requests with values submitted through HTML forms</li>
+        		<li class="list-items">✅ POST new objects using .fetch()</li>
+        		<li class="list-items">✅ Render new content to the DOM</li>
 			</ul>
 			<h2>Warm Up Question</h2>
 			<ul>
-				<li class="list-items">💡 What are asynchronous functions and why are they well-suited for "fetching" from APIs?</li>
+				<li class="list-items">💡 How do our general approaches differ when making POST requests vs. GET requests?</li>
 			</ul>
-		</div>
-		
-		<hr>
+      <h2>Using json-server</h2>
+      <ul>
+        <li>First install JSON Server: <em>npm install -g json-server</em></li>
+        <li>To start the server run: <em>json-server --watch db.json</em></li>
+        <li>This will produce the following endpoints:</li>
+        <ul>
+          <li><em>http://localhost:3000/gods</em></li>
+          <li><em>http://localhost:3000/heroes</em></li>
+          <li><em>http://localhost:3000/locations</em></li>
+          <li><em>http://localhost:3000/myths</em></li>
+        </ul>
+      </ul>
+	</div>
 
-        <h1 class="px-4 py-4 my-4 text-center"><em>Brew Finder</em> 🍻</h1>
+    <hr>
 
-        <form class="text-center" id="brew-form">
-			<input type="text" id="brew-input" placeholder="search breweries..." />
-
-			<input type="submit" value="Submit" />
-        </form>
-        <hr style="margin-left: 25%; width: 50%;">
-    	<div class="px-4 py-4 my-4 text-center" id="brew-list"></div>
- 	</body>
+    <div id="header">
+      <img
+        id="header-img"
+        src="./images/background.jpeg"
+      />
+    </div>
+    <div id="myths-container"></div>
+    <hr>
+    <br>
+    <div id="gods-form-container">
+      <h1>Add a new God</h1>
+      <br>
+      <form id="gods-form">
+        <input type="text" id="greek-name" placeholder="God's greek name"/>
+        <input type="text" id="roman-name" placeholder="God's roman name"/>
+        <input type="text" id="symbol" placeholder="God's symbol"/>
+        <input type="text" id="power" placeholder="God's powers"/>
+        <input type="text" id="father" placeholder="God's father"/>
+        <input type="text" id="mother" placeholder="God's mother"/>
+        <input type="text" id="image-url" placeholder="God's image url" />
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+    <div id="gods-container"></div>
+  </body>
 </html>

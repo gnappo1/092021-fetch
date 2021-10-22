@@ -1,216 +1,105 @@
-// ✅ Request-Response Cycle
+const mythsContainer = () => document.getElementById("myths-container")
+const godsContainer = () => document.getElementById("gods-container")
+const godsForm = () => document.getElementById("gods-form")
 
-    // request => url + http verb
-    // response => status code + message body
-    // async functions => allow us to "wait" before performing additional actions 
+document.addEventListener("DOMContentLoaded", () => {
+    getMyths()
+    getGods()
+    godsForm().addEventListener("submit", handleSubmit)
+})
 
-        // synchronized => happening at the same time
+function handleSubmit(e) {
+    e.preventDefault()
+    const name = e.target[0].value
+    const romanname = e.target[1].value
+    const symbol = e.target[2].value
+    const power = e.target[3].value
+    const father = e.target[4].value
+    const mother = e.target[5].value
+    const url = e.target[6].value
+    const newGod = {name, romanname, symbol, power, father, mother, url}
+    const configObj = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newGod)
+    }
+    godsForm().reset()
+    fetch("http://localhost:3000/gods", configObj)
+    .then(resp => resp.json())
+    .then(god => makeGod(god))
+    .catch(error => alert(error))
+}
 
-            // function sayHello() {
-            //     console.log("Hello!");
-            // }
+function getMyths() {
+    fetch("http://localhost:3000/myths")
+    .then(res => res.json())
+    .then(myths => myths.length > 0 ? myths.forEach(makeMyth) : returnNone())
+    .catch(error => console.log(error))
+}
 
-            // function sayGoodbye() {
-            //     console.log("Goodbye!");
-            // }
+function getGods() {
+    fetch("http://localhost:3000/gods")
+    .then(res => res.json())
+    .then(gods => gods.length > 0 ? gods.forEach(makeGod) : returnNone())
+    .catch(error => console.log(error))
+}
 
-            // sayHello();
-            // sayGoodbye();
-
-        // asynchronized => not happening at the same time
-
-            // async function sayHello() {
-            //     console.log("Hello!");
-            //     return new Promise(resolve => setTimeout(resolve, 1000));
-            // }
-
-            // function sayGoodbye(){
-            //     console.log("Goodbye!");
-            // }
-
-            // sayHello().then(sayGoodbye);
-
-// ✅ HTTP Verbs
-
-    // Create Retrieve Update Destroy => POST, GET, PATCH, DELETE
-
-// ✅ GET Requests with External API
-
-    // https://api.openbrewerydb.org/breweries
-    // https://www.postman.com/
-
-// ✅ Handling Promises from .fetch()
-
-    // .fetch() => used for fetching resources asynchronously across a network
-
-    // fetch('https://api.openbrewerydb.org/breweries') // returns a promise
+function returnNone() {
+    const div = document.createElement('div');
+    div.className='card alert-warning';
+    div.style = 'padding: 20px; margin: 20px;'
     
-    // // // once first Promise is resolved...
-    // .then(resp => resp.json()) // ...convert the response into JSON and return another promise
-    
-    // // // once second Promise is resolved...
-    // .then(breweries => {
-    //     debugger
-    //     // ...console.log the JS response
-    // });
+    const icon = document.createElement('h1');
+    icon.textContent='😢';
 
-// ✅ .catch()
+    const header = document.createElement('h3')
+    header.textContent = "No Myths Found";
 
-    // .catch() => deals with rejected cases only
+    div.append(icon, header);
+    mythsContainer().appendChild(div);
+}
 
-    // fetch('https://api.openbrewerydb.org/brewries') // returns a promise
-    // .then(resp => resp.json()) // returns another promise
-    // .then(breweries => {
-    //     console.log(breweries)
-    // })
-    // .catch(error => {
-    //     alert(error)
-    //     console.log(`Here's my error: ${error}`);
-    // });
+function slugify(string) {
+    return string.toLowerCase().replaceAll(" ", "-")
+}
 
-// -------------------------------------------
-
-// console.log("------------------------");
-// console.log("⬇️ Break Out Activites ⬇️");
-// console.log("🚨 Comment Out Lecture Code Above Before Starting 🚨");
-// console.log("💡 Use console.log() To Check Answers 💡");
-// console.log("------------------------");
-
-// 🚧 Break Out Activity 1: Fetch GET Requests (Static)
-
-    // 🚨 Comment out any conflicting code above before proceeding.
-
-    // ❗ Refer to these constants in your solutions.
-    const BASE_URL = 'https://api.openbrewerydb.org/breweries';
-    const brewList = document.getElementById('brew-list');
-    const brewForm = document.getElementById('brew-form');
-
-    function renderBrew(brew){
-        const div = document.createElement('div');
-        div.id = `brew-card-${brew.id}`;
+function makeMyth(myth) {
+    const div = document.createElement('div');
+        div.id = `myth-card-${slugify(myth.name)}`;
         div.className= 'card alert-success';
         div.style = 'padding: 20px; margin: 20px;'
 
-        const icon = document.createElement('h1');
-        icon.textContent='🍺';
+        const title = document.createElement('h1');
+        title.textContent= myth.name;
         
         const header = document.createElement('h3')
-        header.textContent = `${brew.name}`;
+        header.textContent = myth.gods;
 
         const p = document.createElement('p')
-        p.id = `brew-info-${brew.id}`
-        p.textContent = `
-            Type: ${brew.brewery_type} - 
-            City: ${brew.city} -
-            State: ${brew.state} - 
-            Phone: ${brew.phone ? brew.phone : "N/A"}
-        `
-        div.append(icon, header, p);
-        brewList.appendChild(div);
-    }
+        p.id = `myth-info-${slugify(myth.name)}`
+        p.textContent =  myth.description
+        div.append(title, header, p);
+        mythsContainer().appendChild(div);
+}
 
-    function returnNone() {
-        const div = document.createElement('div');
-        div.className='card alert-warning';
-        div.style = 'padding: 20px; margin: 20px;'
-        
-        const icon = document.createElement('h1');
-        icon.textContent='😢';
+function makeGod(god) {
+    const div = document.createElement('div');
+    div.id = `god-card-${slugify(god.name)}`;
+    div.className= 'card alert-success';
+    div.style = 'padding: 20px; margin: 20px;'
 
-        const header = document.createElement('h3')
-        header.textContent = "No Breweries Found";
-
-        div.append(icon, header);
-        brewList.appendChild(div);
-    }
-
-    // 1️⃣ Create a function (getAllBreweries) that:
-
-        //  ✔️ Fetches all breweries (/breweries)
-        
-        //  ✔️ Invokes renderBrew() for each returned "brewery"
-
-        // 	✨ BONUS: Include error handling using .catch()
-
-        function getAllBreweries(){
-            // ❗ your code here
-            fetch(BASE_URL)
-            .then(resp => resp.json())
-            // .then(breweriesJson => breweriesJson.forEach(brewery => renderBrew(brewery)) )
-            .then(breweriesJson => breweriesJson.forEach(renderBrew))
-            .catch(() => returnNone())
-        }
-
-        // ✅ Check Answer: 
-        // document.addEventListener('DOMContentLoaded', getAllBreweries);
-
-    // 2️⃣ Create a function (getBreweriesByCity) that:
-
-        //  ✔️ Accepts one parameter, a "city" string
+    const title = document.createElement('h1');
+    title.textContent= god.name;
     
-        //  ✔️ Fetches all breweries by "city" (.../breweries?by_city=miami)
+    const header = document.createElement('h3')
+    header.textContent = god.romanname;
 
-        //  ✔️ Invokes renderBrew() for each returned "brewery"
+    const p = document.createElement('p')
+    p.id = `god-info-${slugify(god.name)}`
+    p.textContent =  god.power
+    div.append(title, header, p);
+    godsContainer().appendChild(div);
+}
 
-        // 	✨ BONUS: Include error handling using .catch()
-
-        function getBreweriesByCity(city){
-            // ❗ your code here
-            fetch(`${BASE_URL}?by_city=${city}`)
-            .then(resp => resp.json())
-            // .then(breweriesJson => breweriesJson.forEach(brewery => renderBrew(brewery)) )
-            .then(breweriesJson => breweriesJson.length > 0 ? breweriesJson.forEach(renderBrew) : returnNone())
-            .catch((error) => console.log(`Error: ${error}`))
-        }
-
-        // ✅ Check Answer: 
-        // document.addEventListener('DOMContentLoaded', getBreweriesByCity('boston'));
-
-    // 3️⃣  Create a function (getBreweriesByState) that:
-
-        //  ✔️ Accepts one parameter, a "state" string
-    
-        //  ✔️ Fetches all breweries by "state" (.../breweries?by_state=florida)
-
-        //  ✔️ Invokes renderBrew() for each returned "brewery"
-
-        // 	✨ BONUS: Include error handling using .catch()
-
-        function getBreweriesByState(state){
-            // ❗ your code here
-        }
-    
-        // ✅ Check Answer: 
-        // document.addEventListener('DOMContentLoaded', getBreweriesByState('florida'));
-
-// 🚧 Break Out Activity 2: Fetch GET Requests (Dynamic)
-
-    // 1️⃣ Create a function (searchBreweries) that:
-
-        //  ✔️ Accepts one parameter, "e" (i.e., an "event")
-
-        //  ✔️ Accesses and stores the value of '#brew-input' (query) from the DOM
-
-        //  ✔️ Fetches all breweries matching "query" (`...breweries/search?query=${query}`)
-
-        //  ✔️ Invokes renderBrew() for each returned "brewery"
-
-        //  ✔️ Clears out "brewForm" using .reset()
-
-        //  ✔️ Replaces previous results (clears out "brewList") using .replaceChildren()
-
-        //  ❗ If no breweries are returned, invoke returnNone() (see beginning of Break Out code)
-
-        // 	✨ BONUS: Include error handling using .catch()
-
-        function searchBreweries(e){
-            // ❗ your code here
-            e.preventDefault()
-            const city = e.target[0].value
-            e.target.reset()
-            getBreweriesByCity(city)
-            brewList.replaceChildren()
-        }
-
-        // ✅ Check Answer: 
-        brewForm.addEventListener('submit', searchBreweries);
